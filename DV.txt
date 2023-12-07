@@ -1,0 +1,69 @@
+-- Хаб факультетов
+CREATE TABLE Hub_Faculty (
+    Hub_FacultyID SERIAL PRIMARY KEY,
+    FacultyName VARCHAR(255) NOT NULL
+);
+
+-- Хаб дисциплин
+CREATE TABLE Hub_Course (
+    Hub_CourseID SERIAL PRIMARY KEY,
+    CourseName VARCHAR(255) NOT NULL
+);
+
+-- Хаб преподавателей
+CREATE TABLE Hub_Instructor (
+    Hub_InstructorID SERIAL PRIMARY KEY,
+    InstructorName VARCHAR(255) NOT NULL
+);
+
+-- Сателлит факультетов
+CREATE TABLE Sat_Faculty (
+    Sat_FacultyID SERIAL PRIMARY KEY,
+    Hub_FacultyID INT REFERENCES Hub_Faculty(Hub_FacultyID),
+    LoadDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FacultyName VARCHAR(255) NOT NULL,
+    FacultyLocation VARCHAR(255) -- Пример дополнительного атрибута: местоположение факультета
+);
+
+-- Сателлит дисциплин
+CREATE TABLE Sat_Course (
+    Sat_CourseID SERIAL PRIMARY KEY,
+    Hub_CourseID INT REFERENCES Hub_Course(Hub_CourseID),
+    LoadDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CourseName VARCHAR(255) NOT NULL,
+    CourseCredits INT -- Пример дополнительного атрибута: количество кредитов
+);
+
+-- Сателлит преподавателей
+CREATE TABLE Sat_Instructor (
+    Sat_InstructorID SERIAL PRIMARY KEY,
+    Hub_InstructorID INT REFERENCES Hub_Instructor(Hub_InstructorID),
+    LoadDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    InstructorName VARCHAR(255) NOT NULL,
+    InstructorTitle VARCHAR(50) -- Пример дополнительного атрибута: звание преподавателя
+);
+
+-- Вставка данных
+INSERT INTO Sat_Faculty (Hub_FacultyID, FacultyName, FacultyLocation)
+VALUES
+  (1, 'Факультет 1', 'Местоположение 1'),
+  (2, 'Факультет 2', 'Местоположение 2'),
+  (3, 'Факультет 3', 'Местоположение 3');
+
+INSERT INTO Sat_Course (Hub_CourseID, CourseName, CourseCredits)
+VALUES
+  (1, 'Курс 1', 3),
+  (2, 'Курс 2', 4),
+  (3, 'Курс 3', 5);
+
+INSERT INTO Sat_Instructor (Hub_InstructorID, InstructorName, InstructorTitle)
+VALUES
+  (1, 'Преподаватель 1', 'Профессор'),
+  (2, 'Преподаватель 2', 'Доцент'),
+  (3, 'Преподаватель 3', 'Старший преподаватель');
+
+-- Вывод данных
+SELECT * FROM Sat_Faculty;
+SELECT * FROM Sat_Course;
+SELECT * FROM Sat_Instructor;
+ 
