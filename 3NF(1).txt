@@ -1,0 +1,38 @@
+-- Создание таблицы для факультетов
+CREATE TABLE Faculties (
+    FacultyID SERIAL PRIMARY KEY,
+    FacultyName VARCHAR(255) NOT NULL
+);
+
+-- Создание таблицы для дисциплин
+CREATE TABLE Courses (
+    CourseID SERIAL PRIMARY KEY,
+    CourseName VARCHAR(255) NOT NULL,
+    FacultyID INT REFERENCES Faculties(FacultyID)
+);
+
+-- Создание таблицы для преподавателей
+CREATE TABLE Instructors (
+    InstructorID SERIAL PRIMARY KEY,
+    InstructorName VARCHAR(255) NOT NULL
+);
+
+-- Создание таблицы для расписания
+CREATE TABLE Schedule (
+    ScheduleID SERIAL PRIMARY KEY,
+    CourseID INT REFERENCES Courses(CourseID),
+    InstructorID INT REFERENCES Instructors(InstructorID),
+    DayOfWeek VARCHAR(50) NOT NULL,
+    TimeSlot VARCHAR(50) NOT NULL
+);
+
+INSERT INTO Faculties (FacultyName) VALUES ('Факультет 1'), ('Факультет 2'), ('Факультет 3');
+INSERT INTO Courses (CourseName, FacultyID) VALUES ('Курс 1', 1), ('Курс 2', 2), ('Курс 3', 3);
+INSERT INTO Instructors (InstructorName) VALUES ('Преподаватель 1'), ('Преподаватель 2'), ('Преподаватель 3');
+INSERT INTO Schedule (CourseID, InstructorID, DayOfWeek, TimeSlot) VALUES (1, 1, 'Понедельник', '10:00-12:00'), (2, 2, 'Вторник', '14:00-16:00'), (3, 3, 'Вторник', '16:00-18:00');
+
+-- Вывод данных
+SELECT * FROM Faculties;
+SELECT * FROM Courses;
+SELECT * FROM Instructors;
+SELECT * FROM Schedule;
